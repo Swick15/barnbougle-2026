@@ -126,19 +126,6 @@
     pointer-events: none;
   }
 
-  .hero-badge {
-    display: inline-block;
-    border: 1px solid var(--sand);
-    color: var(--sand);
-    font-family: 'Arial', sans-serif;
-    font-size: 0.68rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 0.4rem 1.2rem;
-    margin-bottom: 2rem;
-    border-radius: 2px;
-  }
-
   .hero h1 {
     font-size: clamp(2.6rem, 8vw, 6.5rem);
     line-height: 1;
@@ -650,10 +637,9 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">Boys Golf Trip</div>
   <h1>Barnbougle<span>2026</span></h1>
   <p class="hero-subtitle">Bridport, Tasmania &nbsp;·&nbsp; 24–27 September 2026</p>
-  <p class="hero-quote">"Three courses, ten mates, and a sea breeze that doesn't care about your handicap."</p>
+  <p class="hero-quote">Settler's Run take on Barnbougle 2026</p>
 
   <div class="hero-meta">
     <div class="hero-meta-item"><span class="label">Players</span><span class="value">10</span></div>
@@ -1054,7 +1040,7 @@
 ══════════════════════════════════════════════════════════ */
 const players = [
   {
-    id: 1, name: "Mick Sweeney", handicap: "7.1", nickname: "The Organiser", photo: "Mick.JPG",
+    id: 1, name: "Mick", handicap: "7.1", nickname: null, photo: "Mick.JPG",
     pgaComp: "Bryson DeChambeau",
     ability: "Long game a genuine strength, short game a very public work in progress. Treats every round like a major.",
     strength: "Off the tee",
@@ -1063,7 +1049,7 @@ const players = [
     audioFile: "Mick - The Touch - Stan Bush (HD Restoration).mp3"
   },
   {
-    id: 2, name: "Pete Sweeney", handicap: "3.5", nickname: null, photo: "Pete.JPG",
+    id: 2, name: "Pete", handicap: "3.5", nickname: null, photo: "Pete.JPG",
     pgaComp: "Xander Schauffele",
     ability: "Statistically the form golfer of the group — until the Dunes' closing stretch gets involved.",
     strength: "Tee to green",
@@ -1072,7 +1058,7 @@ const players = [
     audioFile: "Pete - Pokémon Theme Song.mp3"
   },
   {
-    id: 3, name: "Travis Davis", handicap: "12.5", nickname: "Trav", photo: "Trav.JPG",
+    id: 3, name: "Travis", handicap: "12.5", nickname: "Trav · Star Poo", photo: "Trav.JPG",
     pgaComp: "Louis Oosthuizen",
     ability: "Ball flight built for the wind — laser stinger or stone-cold top, no in-between.",
     strength: "Iron play",
@@ -1081,7 +1067,7 @@ const players = [
     audioFile: "Trav - You're The Best.mp3"
   },
   {
-    id: 4, name: "Shane Somers", handicap: "8.0", nickname: "Buff · Shangas Khan", photo: "Buff.JPG",
+    id: 4, name: "Shane", handicap: "8.0", nickname: "Buff · Shangas Khan", photo: "Buff.JPG",
     pgaComp: "Seve Ballesteros",
     ability: "Money-maker from 60 yards in — the man's hands are dripping with honey.",
     strength: "Wedge play",
@@ -1090,7 +1076,7 @@ const players = [
     audioFile: "Shane - Motorhead - The Game.mp3"
   },
   {
-    id: 5, name: "Corey", handicap: "+0.6", nickname: null, photo: "Corey.JPG",
+    id: 5, name: "Corey", handicap: "+0.6", nickname: "Excavator · Serge · CJ", photo: "Corey.JPG",
     pgaComp: "Sergio Garcia",
     ability: "Pennant Player of the Year — bulletproof draw, chaotic energy.",
     strength: "Ball-striking",
@@ -1099,7 +1085,7 @@ const players = [
     audioFile: "Corey - Freak on a Leash.mp3"
   },
   {
-    id: 6, name: "Harry Whykes", handicap: "+2.7", nickname: "Neighbourhood Watch", photo: "Harry.png",
+    id: 6, name: "Harrison", handicap: "+2.7", nickname: "Harry · Neighbourhood Watch · Johnny Walker · Chicken Little", photo: "Harry.png",
     pgaComp: "Dustin Johnson",
     ability: "Five-time Settlers Run club champion — laconic, loping, and rarely misses a green.",
     strength: "Ball-striking",
@@ -1117,7 +1103,7 @@ const players = [
     audioFile: "Liam - Smells Like Teen Spirit.mp3"
   },
   {
-    id: 8, name: "Matt Callaway Himbury", handicap: "+3.6", nickname: null, photo: "Matt.JPG",
+    id: 8, name: "Matt", handicap: "+3.6", nickname: null, photo: "Matt.JPG",
     pgaComp: "Luke Donald",
     ability: "Surgical 60-degree wedge, but scared of the dark and his own driver.",
     strength: "Wedge play & putting",
@@ -1126,7 +1112,7 @@ const players = [
     audioFile: "Matt - Nookie.mp3"
   },
   {
-    id: 9, name: "Nathan Volpe", handicap: "7.5", nickname: null, photo: "Nathan.JPG",
+    id: 9, name: "Nathan", handicap: "7.5", nickname: "Volpedo", photo: "Nathan.JPG",
     pgaComp: "Charl Schwartzel",
     ability: "Modest metronome — sub-30 points only once in his last 13 rounds.",
     strength: "Consistency",
@@ -1135,7 +1121,7 @@ const players = [
     audioFile: "Nathan - Smooth Operator.mp3"
   },
   {
-    id: 10, name: "Chris Bartlett", handicap: "8.8", nickname: null, photo: "Chris.JPG",
+    id: 10, name: "Chris", handicap: "8.8", nickname: null, photo: "Chris.JPG",
     pgaComp: "Boo Weekley",
     ability: "Big personality, bigger scoring swings — a 51-point medal round and a pair of 23s in the same breath.",
     strength: "Ceiling (on his day)",
@@ -1263,17 +1249,17 @@ const flightGroups = [
   {
     label: "Jetstar", time: "9:50am → 11:30am",
     lines: ["Depart MEL 9:50am · Arrive LST ~11:10am", "Return: Depart LST 11:30am Sun 27 Sep"],
-    names: ["Mick Sweeney", "Pete Sweeney", "Travis Davis", "Harry Whykes"],
+    names: ["Mick", "Pete", "Travis", "Harry"],
   },
   {
     label: "Virgin", time: "8:30am → 1:05pm",
     lines: ["Depart MEL 8:30am · Arrive LST ~9:50am", "Return: Depart LST 1:05pm Sun 27 Sep"],
-    names: ["Shane Somers", "Corey", "Matt Callaway Himbury", "Liam"],
+    names: ["Shane", "Corey", "Matt", "Liam"],
   },
   {
     label: "Nathan & Chris", time: "🚣 TBA",
     lines: ["Making their own way over — last sighted mid-Strait in a pedal boat, holding hands", "Return: also TBA"],
-    names: ["Nathan Volpe", "Chris Bartlett"],
+    names: ["Nathan", "Chris"],
   },
 ];
 
@@ -1293,8 +1279,8 @@ document.getElementById('flightsGrid').innerHTML = flightGroups.map(g => `
    other 8 are drawn the night before — see randomiser below.
 ══════════════════════════════════════════════════════════ */
 // Thursday's Bougle Run groups — real bookings, not part of the random draw
-const thuGroupA = ["Mick Sweeney", "Harry Whykes", "Pete Sweeney", "Travis Davis"];
-const thuGroupB = ["Shane Somers", "Corey", "Liam", "Matt Callaway Himbury"];
+const thuGroupA = ["Mick", "Harry", "Pete", "Travis"];
+const thuGroupB = ["Shane", "Corey", "Liam", "Matt"];
 
 function renderGroups(elId, timeA, timeB, listA, listB, labelA, labelB) {
   const el = document.getElementById(elId);
@@ -1439,8 +1425,8 @@ document.getElementById('teeNC').innerHTML = [
    Chris are on their own itinerary, so not in either car.
 ══════════════════════════════════════════════════════════ */
 const carGroups = [
-  { name: 'Car 1', type: 'Off the Jetstar flight', passengers: ["Mick Sweeney", "Pete Sweeney", "Travis Davis", "Harry Whykes"] },
-  { name: 'Car 2', type: 'Off the Virgin flight', passengers: ["Shane Somers", "Corey", "Matt Callaway Himbury", "Liam"] },
+  { name: 'Car 1', type: 'Off the Jetstar flight', passengers: ["Mick", "Pete", "Travis", "Harry"] },
+  { name: 'Car 2', type: 'Off the Virgin flight', passengers: ["Shane", "Corey", "Matt", "Liam"] },
 ];
 document.getElementById('carGrid').innerHTML = carGroups.map(c => `
   <div class="car-card">
