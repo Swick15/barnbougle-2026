@@ -332,31 +332,6 @@
   }
 
   /* ===== FLIGHTS ===== */
-  .flights-table-wrap {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    overflow-x: auto;
-  }
-  table.flights-table { width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 0.85rem; min-width: 640px; }
-  table.flights-table th {
-    text-align: left;
-    padding: 0.9rem 1.2rem;
-    font-size: 0.62rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--sand);
-    border-bottom: 1px solid var(--card-border);
-    background: var(--navy-light);
-  }
-  table.flights-table td {
-    padding: 0.85rem 1.2rem;
-    border-bottom: 1px solid rgba(29,61,79,0.6);
-    color: var(--text-dim);
-  }
-  table.flights-table tr:last-child td { border-bottom: none; }
-  table.flights-table tr:hover td { background: rgba(95,184,221,0.05); }
-  table.flights-table td.name-cell { color: var(--cream); font-weight: bold; }
   .flights-note {
     margin-top: 1.2rem;
     font-family: Arial, sans-serif;
@@ -799,22 +774,8 @@
     <div class="divider"></div>
     <p>Everyone flying into Launceston (LST) Thursday morning, home Sunday.</p>
   </div>
-  <div class="flights-table-wrap">
-    <table class="flights-table">
-      <thead>
-        <tr>
-          <th>Player</th>
-          <th>Outbound — Thu 24 Sep</th>
-          <th>Departs</th>
-          <th>Arrives LST</th>
-          <th>Return — Sun 27 Sep</th>
-          <th>Departs LST</th>
-        </tr>
-      </thead>
-      <tbody id="flightsBody"></tbody>
-    </table>
-  </div>
-  <p class="flights-note">Flight numbers still TBC — arrival times above are estimates based on typical MEL–LST flight duration, confirm against your actual booking. Nathan &amp; Chris are making their own way over by pedal boat, last sighted mid-Strait, holding hands. ETA unknown.</p>
+  <div class="group-grid" id="flightsGrid"></div>
+  <p class="flights-note">Flight numbers still TBC — arrival times above are estimates based on typical MEL–LST flight duration, confirm against your actual booking.</p>
 </section>
 </div>
 
@@ -888,9 +849,10 @@
     <p>Barnbougle is about an hour's drive northeast of Launceston Airport, near Bridport.</p>
   </div>
   <div class="cars-intro">
-    <strong>Getting from LST to Bridport:</strong> roughly 60–70 minutes via the Tasman Highway. Hire cars picked up at Launceston Airport — need to confirm number of vehicles and drivers below.
+    <strong>Getting from LST to Bridport:</strong> roughly 60–70 minutes via the Tasman Highway. Hire cars picked up at Launceston Airport — need to confirm drivers within each car below.
   </div>
   <div class="car-grid" id="carGrid"></div>
+  <p class="flights-note">Nathan &amp; Chris aren't in either car — no idea what they're doing for transport, and at this point we're scared to ask.</p>
 </section>
 </div>
 
@@ -1251,35 +1213,37 @@ function closeModalOutside(e) {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 /* ══════════════════════════════════════════════════════════
-   FLIGHTS
-   Arrival times are estimates (~1h20m MEL-LST flight time) —
-   confirm against actual bookings once tickets are issued.
+   FLIGHTS — grouped by shared itinerary rather than repeated
+   per-player rows. Arrival times are estimates (~1h20m MEL-LST
+   flight time) — confirm against actual bookings.
 ══════════════════════════════════════════════════════════ */
-const flightInfo = {
-  "Mick Sweeney": { outAirline: "Jetstar", outDepart: "9:50am MEL", outArrive: "~11:10am LST", retAirline: "Jetstar", retDepart: "11:30am LST" },
-  "Pete Sweeney": { outAirline: "Jetstar", outDepart: "9:50am MEL", outArrive: "~11:10am LST", retAirline: "Jetstar", retDepart: "11:30am LST" },
-  "Travis Davis": { outAirline: "Jetstar", outDepart: "9:50am MEL", outArrive: "~11:10am LST", retAirline: "Jetstar", retDepart: "11:30am LST" },
-  "Harry Whykes": { outAirline: "Jetstar", outDepart: "9:50am MEL", outArrive: "~11:10am LST", retAirline: "Jetstar", retDepart: "11:30am LST" },
-  "Shane Somers": { outAirline: "Virgin",  outDepart: "8:30am MEL", outArrive: "~9:50am LST",  retAirline: "Virgin",  retDepart: "1:05pm LST" },
-  "Corey":        { outAirline: "Virgin",  outDepart: "8:30am MEL", outArrive: "~9:50am LST",  retAirline: "Virgin",  retDepart: "1:05pm LST" },
-  "Liam":         { outAirline: "Virgin",  outDepart: "8:30am MEL", outArrive: "~9:50am LST",  retAirline: "Virgin",  retDepart: "1:05pm LST" },
-  "Matt Callaway Himbury": { outAirline: "Virgin",  outDepart: "8:30am MEL", outArrive: "~9:50am LST",  retAirline: "Virgin",  retDepart: "1:05pm LST" },
-  "Nathan Volpe": { outAirline: "Pedal boat 🚣", outDepart: "TBA", outArrive: "TBA", retAirline: "Pedal boat 🚣", retDepart: "TBA" },
-  "Chris Bartlett": { outAirline: "Pedal boat 🚣", outDepart: "TBA", outArrive: "TBA", retAirline: "Pedal boat 🚣", retDepart: "TBA" },
-};
+const flightGroups = [
+  {
+    label: "Jetstar", time: "9:50am → 11:30am",
+    lines: ["Depart MEL 9:50am · Arrive LST ~11:10am", "Return: Depart LST 11:30am Sun 27 Sep"],
+    names: ["Mick Sweeney", "Pete Sweeney", "Travis Davis", "Harry Whykes"],
+  },
+  {
+    label: "Virgin", time: "8:30am → 1:05pm",
+    lines: ["Depart MEL 8:30am · Arrive LST ~9:50am", "Return: Depart LST 1:05pm Sun 27 Sep"],
+    names: ["Shane Somers", "Corey", "Matt Callaway Himbury", "Liam"],
+  },
+  {
+    label: "Nathan & Chris", time: "🚣 TBA",
+    lines: ["Making their own way over — last sighted mid-Strait in a pedal boat, holding hands", "Return: also TBA"],
+    names: ["Nathan Volpe", "Chris Bartlett"],
+  },
+];
 
-document.getElementById('flightsBody').innerHTML = players.map(p => {
-  const f = flightInfo[p.name] || { outAirline: 'Flight TBC', outDepart: 'TBC', outArrive: 'TBC', retAirline: 'Flight TBC', retDepart: 'TBC' };
-  return `
-  <tr>
-    <td class="name-cell">${p.name}</td>
-    <td>${f.outAirline}</td>
-    <td>${f.outDepart}</td>
-    <td>${f.outArrive}</td>
-    <td>${f.retAirline}</td>
-    <td>${f.retDepart}</td>
-  </tr>`;
-}).join('');
+document.getElementById('flightsGrid').innerHTML = flightGroups.map(g => `
+  <div class="group-card">
+    <div class="group-header"><span class="group-name">${g.label}</span><span class="group-time">${g.time}</span></div>
+    <div class="group-body">
+      ${g.lines.map(l => `<div class="group-player-row"><span class="gp-num">✈</span><span class="gp-name">${l}</span></div>`).join('')}
+      ${g.names.map((n, i) => `<div class="group-player-row"><span class="gp-num">${i+1}</span><span class="gp-name">${n}</span></div>`).join('')}
+    </div>
+  </div>
+`).join('');
 
 /* ══════════════════════════════════════════════════════════
    TEE TIME GROUPS
@@ -1429,18 +1393,17 @@ document.getElementById('teeNC').innerHTML = [
 `).join('');
 
 /* ══════════════════════════════════════════════════════════
-   CAR ARRANGEMENTS (draft — 2 cars of 5)
+   CAR ARRANGEMENTS — matches the two flight groups. Nathan &
+   Chris are on their own itinerary, so not in either car.
 ══════════════════════════════════════════════════════════ */
-const names = players.map(p => p.name);
 const carGroups = [
-  { name: 'Car 1', type: 'Hire car · TBC', driver: names[0] || 'TBC', passengers: names.slice(1,5) },
-  { name: 'Car 2', type: 'Hire car · TBC', driver: names[5] || 'TBC', passengers: names.slice(6,10) },
+  { name: 'Car 1', type: 'Off the Jetstar flight', passengers: ["Mick Sweeney", "Pete Sweeney", "Travis Davis", "Harry Whykes"] },
+  { name: 'Car 2', type: 'Off the Virgin flight', passengers: ["Shane Somers", "Corey", "Matt Callaway Himbury", "Liam"] },
 ];
 document.getElementById('carGrid').innerHTML = carGroups.map(c => `
   <div class="car-card">
     <div class="car-header"><span class="car-name">${c.name}</span><span class="car-type">${c.type}</span></div>
     <div class="car-body">
-      <div class="car-role"><span class="cr-label">Driver</span><span class="cr-name">${c.driver}</span></div>
       ${c.passengers.map(n => `<div class="car-role"><span class="cr-label">Passenger</span><span class="cr-name">${n}</span></div>`).join('')}
     </div>
   </div>
