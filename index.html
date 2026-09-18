@@ -568,12 +568,7 @@
     background: linear-gradient(160deg, #163f57 0%, #2e7f9e 55%, #d9b26a 100%);
     overflow: hidden;
   }
-  .course-photo::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(120deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 40px);
-  }
-  .course-photo img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 0; }
+  .course-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .course-photo .course-tag {
     position: absolute; top: 12px; left: 12px;
     font-family: Arial, sans-serif; font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase;
@@ -966,7 +961,7 @@
   </div>
   <div class="course-grid">
     <div class="course-card">
-      <div class="course-photo"><span class="course-tag">Saturday</span></div>
+      <div class="course-photo"><img src="Images/Barnbougle-Play-theDunes-CourseTour-1.jpg" alt="Barnbougle Dunes"><span class="course-tag">Saturday</span></div>
       <div class="course-body">
         <h3>Barnbougle Dunes</h3>
         <div class="course-meta">Tom Doak &amp; Michael Clayton · Opened 2004</div>
@@ -994,7 +989,7 @@
       </div>
     </div>
     <div class="course-card">
-      <div class="course-photo"><span class="course-tag">Thu PM · Fri PM</span></div>
+      <div class="course-photo"><img src="Images/Barnbougle-Play-BougleRun-CourseTour-3-e1648689182698-730x381.jpg" alt="Bougle Run"><span class="course-tag">Thu PM · Fri PM</span></div>
       <div class="course-body">
         <h3>Bougle Run</h3>
         <div class="course-meta">Opened 2021</div>
