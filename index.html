@@ -41,6 +41,20 @@
 
   a { color: inherit; }
 
+  /* ===== BACKGROUND MUSIC BUTTON ===== */
+  .bg-music-btn {
+    position: fixed; bottom: 20px; right: 20px; z-index: 150;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--card-bg); border: 1px solid var(--card-border); color: var(--sand);
+    font-size: 1.3rem; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .bg-music-btn:hover { background: var(--navy-light); border-color: var(--sand); }
+  .bg-music-btn.playing { border-color: var(--sand); box-shadow: 0 0 16px rgba(217,178,106,0.5); }
+  @media (max-width: 640px) {
+    .bg-music-btn { bottom: 14px; right: 14px; width: 46px; height: 46px; font-size: 1.15rem; }
+  }
+
   /* ===== NAV ===== */
   nav {
     position: fixed;
@@ -617,6 +631,9 @@
 </head>
 <body>
 
+<audio id="bgMusicAudio" src="MP3/Background - Halo Theme.mp3" loop preload="none"></audio>
+<button class="bg-music-btn" id="bgMusicBtn" onclick="toggleBgMusic()" aria-label="Toggle background music" title="Background music">🎵</button>
+
 <nav>
   <div class="logo">BARNBOUGLE '26</div>
   <ul>
@@ -1171,10 +1188,29 @@ players.forEach((p, index) => {
 });
 
 let currentAudio = null;
+let bgMusicWasPlaying = false;
+
+function toggleBgMusic() {
+  const audio = document.getElementById('bgMusicAudio');
+  const btn = document.getElementById('bgMusicBtn');
+  if (audio.paused) {
+    audio.play();
+    btn.classList.add('playing');
+    btn.textContent = '🔊';
+  } else {
+    audio.pause();
+    btn.classList.remove('playing');
+    btn.textContent = '🎵';
+  }
+}
 
 function openModal(id) {
   const p = players.find(x => x.id === id);
   if (!p) return;
+
+  const bgAudio = document.getElementById('bgMusicAudio');
+  bgMusicWasPlaying = !bgAudio.paused;
+  if (bgMusicWasPlaying) bgAudio.pause();
 
   document.getElementById('modalName').textContent = p.name;
   document.getElementById('modalNickname').textContent = p.nickname ? `"${p.nickname}"` : '';
@@ -1206,6 +1242,12 @@ function closeModal() {
   document.body.style.overflow = '';
   const audioEl = document.querySelector('#modalMusic audio');
   if (audioEl) audioEl.pause();
+  if (bgMusicWasPlaying) {
+    const bgAudio = document.getElementById('bgMusicAudio');
+    bgAudio.play();
+    document.getElementById('bgMusicBtn').classList.add('playing');
+    document.getElementById('bgMusicBtn').textContent = '🔊';
+  }
 }
 function closeModalOutside(e) {
   if (e.target === document.getElementById('playerModal')) closeModal();
@@ -1498,6 +1540,28 @@ setInterval(updateCountdown, 60000);
     .catch(() => {
       grid.innerHTML = '<p class="weather-loading">Forecast unavailable right now — check <a href="http://www.bom.gov.au/tasmania" target="_blank" rel="noopener">bom.gov.au/tasmania</a> directly.</p>';
     });
+})();
+
+/* ══════════════════════════════════════════════════════════
+   BACKGROUND MUSIC — try to autoplay immediately; most
+   browsers block audible autoplay until the user has
+   interacted with the page, so fall back to starting on the
+   very first click/tap/keypress anywhere on the page.
+══════════════════════════════════════════════════════════ */
+(function() {
+  const bgAudio = document.getElementById('bgMusicAudio');
+  const bgBtn = document.getElementById('bgMusicBtn');
+  function markPlaying() {
+    bgBtn.classList.add('playing');
+    bgBtn.textContent = '🔊';
+  }
+  bgAudio.play().then(markPlaying).catch(() => {
+    const startOnInteraction = () => {
+      bgAudio.play().then(markPlaying).catch(() => {});
+      ['click', 'touchstart', 'keydown'].forEach(evt => document.removeEventListener(evt, startOnInteraction));
+    };
+    ['click', 'touchstart', 'keydown'].forEach(evt => document.addEventListener(evt, startOnInteraction, { once: true }));
+  });
 })();
 </script>
 </body>
